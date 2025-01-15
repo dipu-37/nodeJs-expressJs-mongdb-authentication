@@ -206,6 +206,22 @@ const productSchema = new mongoose.Schema({
 const Product = mongoose.model("Products", productSchema);
 ```
 
+// follow this 
+app.post("/products", async (req, res) => {
+  try {
+    
+    const newProduct = new Product({
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+    });
+    const productData = await newProduct.save();
+    res.status(201).send(productData);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 ## 11. Create document from node.js
 
 ```js
