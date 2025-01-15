@@ -207,7 +207,9 @@ const Product = mongoose.model("Products", productSchema);
 ```
 
 // follow this 
-app.post("/products", async (req, res) => {
+
+
+ app.post("/products", async (req, res) => {
   try {
     
     const newProduct = new Product({
