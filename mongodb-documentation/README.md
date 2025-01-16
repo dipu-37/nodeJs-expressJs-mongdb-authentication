@@ -289,6 +289,18 @@ const getProducts = async (req, res) => {
   }
 };
 getProducts();
+
+
+// Route for fetching products
+app.get("/products", async (req, res) => {
+  try {
+    const products = await Product.find(); // Fetch all products
+    // You can modify the query here based on the requirements
+    res.status(200).send(products);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
 ```
 
 ## 13. Query Operators: Logical operators
