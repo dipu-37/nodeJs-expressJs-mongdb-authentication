@@ -386,6 +386,44 @@ console.log(products);
 // findByIdAndDelete return deleted data
 const products = await Product.findByIdAndDelete({ _id });
 console.log(products);
+
+
+follow it:
+// Route to delete a product using `deleteOne`
+app.delete("/products/deleteOne/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Product.deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+
+    res.status(200).send({ message: "Product deleted successfully", result });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to delete a product using `findByIdAndDelete`
+app.delete("/products/findByIdAndDelete/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedProduct = await Product.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+
+    res.status(200).send({
+      message: "Product deleted successfully",
+      deletedProduct,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 ```
 
 ## 17. mongoose validations
