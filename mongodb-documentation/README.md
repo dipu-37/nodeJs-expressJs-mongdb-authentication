@@ -294,6 +294,8 @@ getProducts();
 // Route for fetching products
 app.get("/products", async (req, res) => {
   try {
+    //req.query.name   //loclahost/product?name=mal&rating=3.5
+    //req.params.id     
     const products = await Product.find(); // Fetch all products
     // You can modify the query here based on the requirements
     res.status(200).send(products);
