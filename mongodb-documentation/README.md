@@ -373,6 +373,77 @@ const products = await Product.findByIdAndUpdate(
   { new: true }
 );
 console.log(products);
+
+
+follow it:
+// Route to update a product using `updateOne`
+app.patch("/products/updateOne/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body; // Example: { rating: 4.8 }
+    const result = await Product.updateOne({ _id: id }, { $set: updateData });
+
+    if (result.matchedCount === 0) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+
+    res.status(200).send({
+      message: "Product updated successfully",
+      result,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to update a product using `findByIdAndUpdate` (returns old data)
+app.patch("/products/findByIdAndUpdate/old/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body; // Example: { rating: 4.8 }
+    const oldProduct = await Product.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: false }
+    );
+
+    if (!oldProduct) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+
+    res.status(200).send({
+      message: "Product updated successfully",
+      oldProduct,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to update a product using `findByIdAndUpdate` (returns updated data)
+app.patch("/products/findByIdAndUpdate/new/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body; // Example: { rating: 4.7 }
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true } // Ensures the updated document is returned
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+
+    res.status(200).send({
+      message: "Product updated successfully",
+      updatedProduct,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 ```
 
 ## 16. delete data
