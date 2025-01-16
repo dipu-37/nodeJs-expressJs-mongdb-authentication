@@ -621,4 +621,35 @@ const products = await Product.find()
   .limit(limit)
   .skip((page - 1) * limit);
 console.log(products);
+
+
+// Paginated API Endpoint
+app.get("/api/products", async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+
+    // Convert query parameters to numbers
+    const pageNumber = Math.max(1, parseInt(page, 10));
+    const limitNumber = Math.max(1, parseInt(limit, 10));
+
+    // Fetch paginated data
+    const products = await Product.find()
+      .limit(limitNumber)
+      .skip((pageNumber - 1) * limitNumber);
+
+    // Get total document count for pagination
+    const total = await Product.countDocuments();
+
+    // Send paginated response
+    res.json({
+      data: products,
+      total,
+      page: pageNumber,
+      limit: limitNumber,
+    });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 ```
